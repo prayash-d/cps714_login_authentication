@@ -1,0 +1,110 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Mulish', sans-serif;
+    transition: 0.3s all ease-in-out;
+   }
+   body{
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   height: 100vh;
+   background-color: #fff;
+   }
+   .shadow-wrap{
+    border-radius: 5px;
+    padding: 25px;
+    background-color:#F0F2FB;
+   }
+   .form-wrap{
+    background-color: #fff;
+   padding: 70px;
+   }
+   .form-wrap form *{
+    display: block;
+    width: 100%;
+   }
+   .form-wrap form label{
+   margin-bottom: 5px;
+   font-size: 14px;
+   font-weight: 700;
+   line-height: 26px; 
+   }
+   .form-wrap form input{
+   padding: 12px 20px;
+   border-radius: 5px;
+   border: 1px solid #DAE1F5;
+   background: #FFF; 
+   color: #545D7A; 
+   }
+   #id_username{
+    margin-bottom: 20px;
+   }
+   .form-wrap button{
+    border-radius: 5px;
+   background: #10182F;
+   color: #FFF;
+   cursor: pointer;
+   text-align: center;
+   font-size: 16px;
+   padding: 12px 68px;
+   font-weight: 700;
+   border: 1px solid transparent;
+   margin-top: 30px;
+   line-height: 26px; 
+   }
+   .signup-link{
+    color: #10182F;
+    font-size: 15px;
+    margin-top: 20px;
+    text-align: center;
+    line-height: 25px;
+    display: block;
+   text-decoration: none;
+   }
+   .signup-link:hover{
+    text-decoration: underline;
+   }
+   .form-wrap button:hover{
+    background-color: #fff;
+    color: #10182F;
+    border-color: #10182F;
+   
+   }
+
+
+   .home-content {
+    padding: 20px; /* Optional: Add some padding for better spacing */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center the contents horizontally */
+}
+
+.home-content p {
+    margin: 0 0 10px 0; /* Optional: Adjust margin to control spacing */
+}
+
+.logout-container {
+    display: flex;
+    justify-content: center; /* Center the button horizontally */
+    width: 100%; /* Ensure the container takes full width */
+}
+
+.logout-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #007bff; /* Change this to the color you want */
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.logout-btn:hover {
+    background-color: #0056b3; /* Change this to the hover color you want */
+}
