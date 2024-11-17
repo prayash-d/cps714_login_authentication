@@ -36,7 +36,7 @@ def login_view(request):
         else:
             messages.error(request, "Invalid email or password.")
     
-    return render(request, 'user/login.html')  # Render the login template
+    return render(request, 'registration/login.html')  # Render the login template
 
 
 ##this view is for the signup page
@@ -132,14 +132,14 @@ def verify_email(request):
             email.content_subtype = 'html'
             email.send()
             print("Email sent")
-            return redirect('verify_email_done')
+            return redirect('base:verify_email_done')
         else:
             return redirect('signup')
     return render(request, 'user/verify_email.html')
 
 
 def verify_email_done(request):
-    return render(request, 'user/base:verify_email_done.html')
+    return render(request, 'user/verify_email_done.html')
 
 #verify the link that the user clicks on...
 # This view decodes the link that the user clicked on and confirms if it is valid or not. 

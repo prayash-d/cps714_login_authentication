@@ -105,6 +105,11 @@ AUTH_PASSWORD_VALIDATORS = [
 #django=i needs to be aware of the default user model has changed 
 AUTH_USER_MODEL = 'base.CustomUser'
 
+#If you are using a custom user model where email replaces username, 
+# ensure the AUTHENTICATION_BACKENDS in your settings.py supports email-based authentication.
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
