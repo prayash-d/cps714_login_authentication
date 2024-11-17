@@ -82,6 +82,7 @@ DATABASES = {
     }
 }
 
+ALLOW_DUPLICATE_EMAILS = True  # Set this to False in production
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -134,7 +135,7 @@ LOGOUT_REDIRECT_URL = "base:login"
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 EMAIL_HOST = "smtp.gmail.com"
-EMAIL_HOST_USER = "pooja2014.b@gmail.com"
+EMAIL_HOST_USER = "pooji0602@gmail.com"
 EMAIL_HOST_PASSWORD = "usre rvcd zkvw gxha"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True

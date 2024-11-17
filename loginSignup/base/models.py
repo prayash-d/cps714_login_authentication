@@ -29,7 +29,7 @@ class CustomUserManager(BaseUserManager):
 class CustomUser(AbstractUser):
     #we want to login with email instead of username so we are making changes ot the user model that is provided by django by default
     username = None
-    email = models.EmailField(_('Email Address'), max_length=50, unique=True)
+    email = models.EmailField(_('Email Address'), max_length=50, unique=True) #removed unique=True for development purposes !!ADD IT BACK!!!!
     email_is_verified = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
