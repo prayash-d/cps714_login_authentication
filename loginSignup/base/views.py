@@ -165,3 +165,8 @@ def verify_email_confirm(request, uidb64, token):
 def verify_email_complete(request):
     redirect_url = reverse('base:home')
     return render(request, 'user/verify_email_complete.html')
+
+
+def user_list(request):
+    users = User.objects.all()
+    return render(request, 'user/user_list.html', {'users': users})
