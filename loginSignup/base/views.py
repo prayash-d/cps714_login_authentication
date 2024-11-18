@@ -17,7 +17,7 @@ User = get_user_model()
 
 @login_required
 def home(request):
-    return render(request, "/home.html", {})
+    return render(request, "home.html", {})
 
 
 def login_view(request):
@@ -32,7 +32,7 @@ def login_view(request):
             # Log in the user
             login(request, user)
             messages.success(request, "You have successfully logged in.")
-            return redirect('home')  # Redirect to the home page or another page
+            return redirect('base:home')  # Redirect to the home page or another page
         else:
             messages.error(request, "Invalid email or password.")
     
@@ -107,7 +107,7 @@ def signup_view(request):
 def verify_email(request):
     if request.method == "POST":
         print("verify email entered")
-        if request.user.email_is_verified != True:
+        if request.user.email_verified != True:
             current_site = get_current_site(request)
             user = request.user
             uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
@@ -143,7 +143,7 @@ def verify_email_done(request):
 
 #verify the link that the user clicks on...
 # This view decodes the link that the user clicked on and confirms if it is valid or not. 
-# If the token is valid, the email_is_verified field of the user is set to True and the user is redirected to the verify_email_complete URL.
+# If the token is valid, the email_verified field of the user is set to True and the user is redirected to the verify_email_complete URL.
 # if the link is invalid, the user is sent to the verify_email_confirm.html page.
 
 def verify_email_confirm(request, uidb64, token):
@@ -153,7 +153,7 @@ def verify_email_confirm(request, uidb64, token):
     except(TypeError, ValueError, OverflowError, user.DoesNotExist):
         user = None
     if user is not None and account_activation_token.check_token(user, token):
-        user.email_is_verified = True
+        user.email_verified = True
         user.save()
         messages.success(request, 'Your email has been verified.')
         return redirect('base:verify_email_complete')

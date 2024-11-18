@@ -3,7 +3,7 @@ from .views import home, signup_view, verify_email, verify_email_done, verify_em
 from . import views
 
 urlpatterns = [
-    path("", home, name="home"),
+    path("", views.home, name="home"),
     path('login/', views.login_view, name='login_view'),
     path("signup/", views.signup_view, name="signup_view"),
     path("accounts/", include("django.contrib.auth.urls")),

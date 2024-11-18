@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
@@ -9,6 +10,7 @@ class CustomUserManager(BaseUserManager):
         if not email:
             raise ValueError(_('The Email must be set'))
         email = self.normalize_email(email)
+        extra_fields.setdefault('status', 'Active')
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
         user.save()
@@ -27,18 +29,55 @@ class CustomUserManager(BaseUserManager):
 
 # Create your models here.
 class CustomUser(AbstractUser):
+
+    ROLE_CHOICES = [
+        ('Admin', 'Admin'),
+        ('Retailer', 'Retailer'),
+        ('Customer', 'Customer'),
+        ('Partner', 'Partner'),
+    ]
+    STATUS_CHOICES = [
+        ('Active', 'Active'),
+        ('Inactive', 'Inactive'),
+    ]
+
+
     #we want to login with email instead of username so we are making changes ot the user model that is provided by django by default
     username = None
-    email = models.EmailField(_('Email Address'), max_length=50, unique=True) #removed unique=True for development purposes !!ADD IT BACK!!!!
-    email_is_verified = models.BooleanField(default=False)
+    user_id = models.AutoField(primary_key=True)
+    email = models.EmailField(_('Email Address'), max_length=255, unique=True)
+    password_hash = models.CharField(_('Password Hash'), max_length=255, null=False)
+    role = models.CharField(_('Role'), max_length=10, choices=ROLE_CHOICES, null=False)
+    status = models.CharField(_('Status'), max_length=10, choices=STATUS_CHOICES, default='Active')
+    email_verified = models.BooleanField(_('Email Verified'), default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['role']
 
     objects = CustomUserManager()
 
     def __str__(self):
-        return self.email
+        return f"{self.email} ({self.role})"
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs) #save the new user model with new changes by super().save() method
+
+# User Profile model
+class UserProfile(models.Model):
+    profile_id = models.AutoField(primary_key=True)
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,  # This ensures the foreign key uses the custom user model
+        on_delete=models.CASCADE,
+        related_name="profile"
+    )
+    first_name = models.CharField(_('First Name'), max_length=100, null=False)
+    last_name = models.CharField(_('Last Name'), max_length=100, null=False)
+    contact_number = models.CharField(_('Contact Number'), max_length=20, blank=True, null=True)
+    preferences = models.JSONField(_('Preferences'), blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"
