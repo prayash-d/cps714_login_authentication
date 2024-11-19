@@ -40,7 +40,7 @@ class UserRegisterForm(forms.ModelForm):
 
     class Meta:
         model = CustomUser
-        fields = ['email', 'password', 'role', 'status']  # Fields from the CustomUser model
+        fields = ['email', 'password', 'role']  # Fields from the CustomUser model
 
     def clean(self):
         cleaned_data = super().clean()
