@@ -1,0 +1,19 @@
+<div style="background-color: #c2c2c2; padding: 15px;">
+    <h2 style="margin: 0; padding: 10px; border-top-left-radius: 10px; border-top-right-radius: 10px; background-color: #5865F2; color: #ffffff;">Verify Email</h2>
+    <div style="margin: 0; padding: 15px; background-color: #ffffff;">
+        <p>Hi {{ user.email }},</p>
+        <p>Please click the link below to verify your email:</p>
+        <a href="{{ protocol }}://{{ domain }}{% url 'base:verify_email_confirm' uidb64=uidb64 token=token %}">
+            Verify Email
+        </a>
+        <p>{{ protocol }}://{{ domain }}{% url 'base:verify_email_confirm' uidb64=uidb64 token=token %}</p>
+
+        <p style="margin-top: 40px;">Or you can copy the link below to your browser</p>
+        <p>{{ request.scheme }}://{{ domain }}{% url 'base:verify_email_confirm' uidb64=uidb64 token=token %}</p>
+        <p>The user auth Team</p>
+    </div>
+    <div style="text-align: center; margin-top: 20px 0;">
+        <p>© {% now 'Y' %} <a href="https://delighto.medium.com">Blog</a></p>
+        <p>Follow us on <a href="https://twitter.com/DelightGbolahan">Twitter</a></p>
+    </div>
+</div>

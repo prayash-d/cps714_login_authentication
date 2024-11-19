@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "base",
+
 ]
 
 MIDDLEWARE = [
@@ -81,6 +82,7 @@ DATABASES = {
     }
 }
 
+ALLOW_DUPLICATE_EMAILS = True  # Set this to False in production
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -100,6 +102,14 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+#django=i needs to be aware of the default user model has changed 
+AUTH_USER_MODEL = 'base.CustomUser'
+
+#If you are using a custom user model where email replaces username, 
+# ensure the AUTHENTICATION_BACKENDS in your settings.py supports email-based authentication.
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
@@ -125,3 +135,15 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 LOGIN_REDIRECT_URL = "base:home"
 LOGOUT_REDIRECT_URL = "base:login"
+
+#new settings for email verification
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_HOST_USER = "pooji0602@gmail.com"
+EMAIL_HOST_PASSWORD = "usre rvcd zkvw gxha"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = "GreenSomething pooja2014.b@gmail.com"
+
+
