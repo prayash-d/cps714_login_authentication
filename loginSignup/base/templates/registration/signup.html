@@ -9,11 +9,6 @@
             {% csrf_token %}
             {{ form.as_p }}  <!-- This renders the username and password fields automatically -->
 
-            <!-- Manually add the email field -->
-            {% comment %} <label for="email">Email</label>
-            <input type="email" name="email" required>  <!-- Email input field added manually --> {% endcomment %}
-
-
 
             <button type="submit">Submit</button>
         </form>
