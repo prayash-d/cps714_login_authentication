@@ -64,6 +64,7 @@ class CustomUser(AbstractUser):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs) #save the new user model with new changes by super().save() method
 
+
 # User Profile model
 class UserProfile(models.Model):
     profile_id = models.AutoField(primary_key=True)

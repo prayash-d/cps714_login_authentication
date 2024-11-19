@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
@@ -69,7 +70,7 @@ def signup_view(request):
         form = UserRegisterForm(request.POST)
         if form.is_valid():
             print("Signup Form is valid")
-            user = form.save(commit=False)
+            user = form.save(commit=True)
             password = form.cleaned_data.get('password')
             user.set_password(password)
             user.save()
@@ -166,7 +167,20 @@ def verify_email_complete(request):
     redirect_url = reverse('base:home')
     return render(request, 'user/verify_email_complete.html')
 
-
+#only Admins can view this page
 def user_list(request):
-    users = User.objects.all()
-    return render(request, 'user/user_list.html', {'users': users})
+    if request.user.role == 'Admin':
+        users = CustomUser.objects.all()
+        return render(request, 'user/user_list.html', {'users': users})
+    else:
+        return HttpResponse("You are not authorized to view this page.")
+    
+
+from django.shortcuts import render, get_object_or_404
+from .models import CustomUser
+
+def user_profile_view(request, user_id):
+   # Fetch all users with their related profiles
+    users = CustomUser.objects.select_related('profile').all()
+ 
+    return render(request, 'user_profile.html', {'users': users})
