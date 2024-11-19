@@ -14,7 +14,7 @@ Make sure you have the following installed on your machine:
 
 - Python (version 3.10 or higher recommended)
 - pip (Python package installer)
-- Virtualenv (optional but recommended for isolating dependencies)
+- Virtualenv (optional but recommended for isolating dependencies) or pipenv
 
 ## Installation Instructions
 
