@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import home, signup_view, verify_email, verify_email_done, verify_email_confirm, verify_email_complete
+from .views import home, signup_view, verify_email, verify_email_done, verify_email_confirm, verify_email_complete, user_list
 from . import views
 
 urlpatterns = [
