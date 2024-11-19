@@ -6,7 +6,8 @@ This is a Django-based web application designed for user authentication and emai
 
 - User registration with email verification.
 - User login and logout.
-- Custom user model using email instead of username.
+- Email verification and password recovery functions
+- Role-based access compatible
 
 ## Prerequisites
 
