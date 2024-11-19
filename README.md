@@ -6,7 +6,8 @@ This is a Django-based web application designed for user authentication and emai
 
 - User registration with email verification.
 - User login and logout.
-- Custom user model using email instead of username.
+- Email verification and password recovery functions
+- Role-based access compatible
 
 ## Prerequisites
 
@@ -14,7 +15,7 @@ Make sure you have the following installed on your machine:
 
 - Python (version 3.10 or higher recommended)
 - pip (Python package installer)
-- Virtualenv (optional but recommended for isolating dependencies)
+- Virtualenv (optional but recommended for isolating dependencies) or pipenv
 
 ## Installation Instructions
 
