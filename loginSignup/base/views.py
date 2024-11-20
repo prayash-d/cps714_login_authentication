@@ -21,7 +21,16 @@ User = get_user_model()
 @login_required
 def home(request):
     # Renders the home page. Requires the user to be logged in.
-    return render(request, "home.html", {})
+
+    user = request.user  # Get the currently logged-in user
+    user_profile = user.profile  # Access the related UserProfile using related_name='profile'
+
+    context = {
+        'user': user,
+        'profile': user_profile,  # Add user profile information to the context
+    }
+
+    return render(request, "home.html", context)
 
 def login_view(request):
     if request.method == "POST":
@@ -82,7 +91,7 @@ def verify_email(request):
         user = request.user
         current_site = get_current_site(request)
         subject = 'Activate Your Account'
-        message = render_to_string('account_activation_email.html', {  # Uses template account_activation_email.html
+        message = render_to_string('user/verify_email_message.html', {  # Uses template account_activation_email.html
             'user': user,
             'domain': current_site.domain,
             'protocol': request.scheme,

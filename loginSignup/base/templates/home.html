@@ -4,5 +4,16 @@
     <p>Welcome to GreenGrove Farms!</p>
     <a class="logout-btn" href="{% url 'base:logout_view' %}">Logout</a>
     <a class="logout-btn" href="{% url 'base:user_list' %}">Admin Dashboard</a>
+
+    <div>
+        <h2>User Information</h2>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>Role:</strong> {{ user.role }}</p>
+        <p><strong>Status:</strong> {{ user.status }}</p>
+        <p><strong>First Name:</strong> {{ profile.first_name }}</p>
+        <p><strong>Last Name:</strong> {{ profile.last_name }}</p>
+        <p><strong>Contact Number:</strong> {{ profile.contact_number }}</p>
+        <p><strong>Preferences:</strong> {{ profile.preferences }}</p>
+    </div>
 </div>
 {% endblock content %}
