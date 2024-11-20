@@ -6,10 +6,10 @@
         <a href="{{ protocol }}://{{ domain }}{% url 'base:verify_email_confirm' uidb64=uidb64 token=token %}">
             Verify Email
         </a>
+        
+        <p style="margin-top: 40px;">Or you can copy the link below to your browser</p>
         <p>{{ protocol }}://{{ domain }}{% url 'base:verify_email_confirm' uidb64=uidb64 token=token %}</p>
 
-        <p style="margin-top: 40px;">Or you can copy the link below to your browser</p>
-        <p>{{ request.scheme }}://{{ domain }}{% url 'base:verify_email_confirm' uidb64=uidb64 token=token %}</p>
         <p>The user auth Team</p>
     </div>
     <div style="text-align: center; margin-top: 20px 0;">

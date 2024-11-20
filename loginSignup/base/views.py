@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate, login, get_user_model
+from django.contrib.auth import authenticate, login, get_user_model, logout, update_session_auth_hash
 from django.urls import reverse
 from .forms import UserRegisterForm
 from django.contrib.sites.shortcuts import get_current_site
@@ -12,9 +12,18 @@ from django.template.loader import render_to_string
 from .tokens import account_activation_token
 from django.core.mail import EmailMessage
 from django.contrib import messages
+#for user profile view
+from django.shortcuts import render, get_object_or_404
+from .models import CustomUser
+from django.core.mail import send_mail
+from django.urls import reverse_lazy
+from django.contrib.messages.views import SuccessMessageMixin
+
 
 User = get_user_model()
-
+# The User model is imported from the get_user_model() function in the forms.py file.
+# This is done to ensure that the user model is referenced correctly.
+# so we can reference the user model as User instead of CustomUser
 
 @login_required
 def home(request):
@@ -39,6 +48,9 @@ def login_view(request):
     
     return render(request, 'registration/login.html')  # Render the login template
 
+def logout_view(request):
+    logout(request) #logout the user
+    return redirect('base:login_view')
 
 ##this view is for the signup page
 # def authView(request):
@@ -90,19 +102,17 @@ def signup_view(request):
 
 
 
-###Views to singup email verification
-# Verify email: send the verification link to the user’s email.
-# Verify email done: tell the user to check his/her email.
-# Verify email confirm: verify the link.
-# Verify email complete: redirect the user to your website after verification.
-
-# The User model is imported from the get_user_model() function in the forms.py file.
-# This is done to ensure that the user model is referenced correctly.
-# so we can reference the user model as User instead of CustomUser
+###Views for singup email verification:
+# 1. Verify email: send the verification link to the user’s email.
+# 2. Verify email done: tell the user to check his/her email.
+# 3. Verify email confirm: verify the link.
+# 4. Verify email complete: redirect the user to your website after verification.
 
 
-## send email with verification link
-# In the code above, if the user’s email is unverified, an account activation token is generated using the account_activation_token class 
+
+
+## send email with verification link:
+# In the code below, if the user’s email is unverified, an account activation token is generated using the account_activation_token class 
 # This token can be used to verify a user through email. 
 # A uid was also generated and encoded to ensure that the appropriate user _ to whom the email was sent _ gets verified.
 def verify_email(request):
@@ -168,19 +178,19 @@ def verify_email_complete(request):
     return render(request, 'user/verify_email_complete.html')
 
 #only Admins can view this page
+@login_required
 def user_list(request):
     if request.user.role == 'Admin':
         users = CustomUser.objects.all()
         return render(request, 'user/user_list.html', {'users': users})
     else:
         return HttpResponse("You are not authorized to view this page.")
-    
 
-from django.shortcuts import render, get_object_or_404
-from .models import CustomUser
-
+# View to display the user profile for a specific user
 def user_profile_view(request, user_id):
    # Fetch all users with their related profiles
     users = CustomUser.objects.select_related('profile').all()
  
     return render(request, 'user_profile.html', {'users': users})
+
+
