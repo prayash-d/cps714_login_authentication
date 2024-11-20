@@ -7,41 +7,47 @@ User = get_user_model()
 class UserRegisterForm(forms.ModelForm):
     password = forms.CharField(
         label='Password',
-        widget=forms.PasswordInput(attrs={'placeholder': 'Enter your password'}),
+        label_suffix= '',
+        widget=forms.PasswordInput(attrs={'placeholder': ''}),
     )
 
     confirm_password = forms.CharField(
         label='Confirm Password',
+        label_suffix= '',
         widget=forms.PasswordInput(attrs={'placeholder': 'Confirm your password'}),
     )
 
     role = forms.ChoiceField(
         label='Role',
+        label_suffix= '',
         choices=CustomUser.ROLE_CHOICES,
-        widget=forms.Select(attrs={'placeholder': 'Select your role'}),
+        widget=forms.Select(attrs={'placeholder': 'Select your role', 'class': 'form-dropdown'}),
     )
     # Fields from the UserProfile model
     first_name = forms.CharField(
         label='First Name',
+        label_suffix= '',
         max_length=100,
-        widget=forms.TextInput(attrs={'placeholder': 'Enter your first name'}),
+        widget=forms.TextInput(attrs={'placeholder': 'John'}),
     )
     last_name = forms.CharField(
         label='Last Name',
+        label_suffix= '',
         max_length=100,
-        widget=forms.TextInput(attrs={'placeholder': 'Enter your last name'}),
+        widget=forms.TextInput(attrs={'placeholder': 'Smith'}),
     )
     contact_number = forms.CharField(
-        label='Contact Number',
+        label='Phone Number',
+        label_suffix= '',
         max_length=20,
         required=False,
-        widget=forms.TextInput(attrs={'placeholder': 'Enter your contact number'}),
+        widget=forms.TextInput(attrs={'placeholder': 'e.g. 1235467890'}),
     )
 
     class Meta:
         model = CustomUser
         fields = ['email', 'password', 'role']  # Fields from the CustomUser model
-
+        
     def clean(self):
         cleaned_data = super().clean()
         password = cleaned_data.get('password')
