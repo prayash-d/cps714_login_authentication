@@ -1,0 +1,29 @@
+/* fonts.css */
+
+/* Importing fonts */
+/*Font: Inter*/
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+:root{
+    --font-primary: 'Inter', sans-serif;
+}
+*{
+    font-family: var(--font-primary);
+}
+
+/* Sizing adjustments */
+.text-sm{
+    font-size: 0.875rem;
+  }
+  /* Body/field texts*/
+body{
+    font-size: 1rem;
+}
+.text-lg{
+    font-size: 1.25rem;
+}
+/* Section titles: h3*/
+h3{
+    font-size: 2rem;
+    margin: 10px;
+}
