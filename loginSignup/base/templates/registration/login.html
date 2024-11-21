@@ -3,8 +3,19 @@
 {% block content %}
 
 <div class="shadow-wrap">
+
     <h3>Login</h3>
     <div class="form-wrap">
+         <!-- Messages Block -->
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li class="{% if message.tags %}{% endif %}">
+                {{ message }}
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
     <form method="POST">
         {% csrf_token %}
         <label for="email">Email</label>
