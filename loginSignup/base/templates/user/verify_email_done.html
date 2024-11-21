@@ -1,5 +1,8 @@
-<div>
-    <h3>An email has been sent with instructions to verify your email</h3>
-    <a class="login-link" href={% url "base:login_view" %}>Login</a>
-</div>
+{% extends "base.html" %}
 
+{% block content %}
+<div class="shadow-wrap">
+    <h3>Verification email has been sent successfully!</h3>
+    <a class="signup-link" href={% url "base:login_view" %}>Back to Login</a>
+</div>
+{% endblock content %}

@@ -5,34 +5,39 @@ from .models import UserProfile, CustomUser
 User = get_user_model()
 
 class UserRegisterForm(forms.ModelForm):
+    email = forms.EmailField(
+        label='Email Address',
+        label_suffix= '*',
+        widget=forms.EmailInput(attrs={'placeholder': 'johnsmith@greengrove.com'}),
+    )
     password = forms.CharField(
         label='Password',
-        label_suffix= '',
+        label_suffix= '*',
         widget=forms.PasswordInput(attrs={'placeholder': ''}),
     )
 
     confirm_password = forms.CharField(
         label='Confirm Password',
-        label_suffix= '',
-        widget=forms.PasswordInput(attrs={'placeholder': 'Confirm your password'}),
+        label_suffix= '*',
+        widget=forms.PasswordInput(attrs={'placeholder': ''}),
     )
 
     role = forms.ChoiceField(
         label='Role',
-        label_suffix= '',
+        label_suffix= '*',
         choices=CustomUser.ROLE_CHOICES,
         widget=forms.Select(attrs={'placeholder': 'Select your role', 'class': 'form-dropdown'}),
     )
     # Fields from the UserProfile model
     first_name = forms.CharField(
         label='First Name',
-        label_suffix= '',
+        label_suffix= '*',
         max_length=100,
         widget=forms.TextInput(attrs={'placeholder': 'John'}),
     )
     last_name = forms.CharField(
         label='Last Name',
-        label_suffix= '',
+        label_suffix= '*',
         max_length=100,
         widget=forms.TextInput(attrs={'placeholder': 'Smith'}),
     )
@@ -47,6 +52,9 @@ class UserRegisterForm(forms.ModelForm):
     class Meta:
         model = CustomUser
         fields = ['email', 'password', 'role']  # Fields from the CustomUser model
+    
+    # form field order
+    field_order = ['first_name', 'last_name', 'email', 'contact_number', 'password', 'confirm_password', 'role']
         
     def clean(self):
         cleaned_data = super().clean()

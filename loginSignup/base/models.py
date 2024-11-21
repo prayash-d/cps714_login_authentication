@@ -31,10 +31,10 @@ class CustomUserManager(BaseUserManager):
 class CustomUser(AbstractUser):
 
     ROLE_CHOICES = [
-        ('Admin', 'Admin'),
-        ('Retailer', 'Retailer'),
         ('Customer', 'Customer'),
+        ('Retailer', 'Retailer'),
         ('Partner', 'Partner'),
+        ('Admin', 'Admin'),
     ]
     STATUS_CHOICES = [
         ('Active', 'Active'),
@@ -46,8 +46,8 @@ class CustomUser(AbstractUser):
     username = None
     user_id = models.AutoField(primary_key=True)
     email = models.EmailField(_('Email Address'), max_length=255, unique=True)
-    password_hash = models.CharField(_('Password Hash'), max_length=255, null=False)
     role = models.CharField(_('Role'), max_length=10, choices=ROLE_CHOICES, null=False)
+    password_hash = models.CharField(_('Password Hash'), max_length=255, null=False)
     status = models.CharField(_('Status'), max_length=10, choices=STATUS_CHOICES, default='Active')
     email_verified = models.BooleanField(_('Email Verified'), default=False)
     created_at = models.DateTimeField(auto_now_add=True)
