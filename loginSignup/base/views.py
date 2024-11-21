@@ -135,9 +135,9 @@ def user_list(request):
     users = CustomUser.objects.all()  # Uses CustomUser model from models.py
     return render(request, 'user/user_list.html', {'users': users})
 
-# View to display the user profile for a specific user
-def user_profile_view(request, user_id):
-   # Fetch all users with their related profiles
-    users = CustomUser.objects.select_related('profile').all()
+# # View to display the user profile for a specific user
+# def user_profile_view(request, user_id):
+#    # Fetch all users with their related profiles
+#     users = CustomUser.objects.select_related('profile').all()
  
-    return render(request, 'user_profile.html', {'users': users})
+#     return render(request, 'user_profile.html', {'users': users})
