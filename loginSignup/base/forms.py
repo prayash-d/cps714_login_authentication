@@ -33,7 +33,7 @@ class UserRegisterForm(forms.ModelForm):
         label='First Name',
         label_suffix= '*',
         max_length=100,
-        widget=forms.TextInput(attrs={'placeholder': 'John'}),
+        widget=forms.TextInput(attrs={'placeholder': 'Joanne'}),
     )
     last_name = forms.CharField(
         label='Last Name',
@@ -48,27 +48,37 @@ class UserRegisterForm(forms.ModelForm):
         required=False,
         widget=forms.TextInput(attrs={'placeholder': 'e.g. 1235467890'}),
     )
-
+    # Meta class to specify the model and fields to be used
     class Meta:
         model = CustomUser
         fields = ['email', 'password', 'role']  # Fields from the CustomUser model
     
     # form field order
     field_order = ['first_name', 'last_name', 'email', 'contact_number', 'password', 'confirm_password', 'role']
-        
+
+     # Clean the form data add check for errors   
     def clean(self):
         cleaned_data = super().clean()
         password = cleaned_data.get('password')
         confirm_password = cleaned_data.get('confirm_password')
 
+        # Check if password and confirm_password match
         if password and confirm_password and password != confirm_password:
             self.add_error('confirm_password', "Passwords do not match. Please try again.")
 
+        # Check if password is at least 8 characters long
         if password and len(password) < 8:
             self.add_error('password', "Password must be at least 8 characters long.")
 
+            # Check if the password contains at least 3 numbers
+        if password:
+            digit_count = sum(char.isdigit() for char in password)
+            if digit_count < 3:
+                self.add_error('password', "Password must contain at least 3 numbers.")
+
         return cleaned_data
 
+    # Save the user and profile data when the form is submitted
     def save(self, commit=True):
         # Save the user first
         user = super().save(commit=False)
