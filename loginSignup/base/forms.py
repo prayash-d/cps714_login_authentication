@@ -64,8 +64,8 @@ class UserRegisterForm(forms.ModelForm):
         if password and confirm_password and password != confirm_password:
             self.add_error('confirm_password', "Passwords do not match. Please try again.")
 
-        if password and len(password) < 5:
-            self.add_error('password', "Password must be at least 5 characters long.")
+        if password and len(password) < 8:
+            self.add_error('password', "Password must be at least 8 characters long.")
 
         return cleaned_data
 
