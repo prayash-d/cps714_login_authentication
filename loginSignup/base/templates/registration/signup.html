@@ -2,15 +2,14 @@
 
 {% block content %}
 <div class="shadow-wrap">
-    <h3>Signup</h3>
+    <h3>Register</h3>
+    <small>*denotes a require field.</small>
     <div class="form-wrap">
         <form method="POST">
             {% csrf_token %}
             {{ form.as_p }}  <!-- This renders the username and password fields automatically -->
             <button type="submit">Submit</button>
         </form>
-
-        <a class="signup-link" href="{% url 'base:login_view' %}">Login</a>
     </div>
     <a class="signup-link" href="{% url 'base:login' %}">Login</a>
 </div>

@@ -43,7 +43,7 @@ def login_view(request):
         if user is not None:
             # Log in the user
             login(request, user)
-            messages.success(request, "You have successfully logged in.")
+            messages.success(request, "You have successfully logged out.")
             return redirect('base:home')  # Redirect to the home page or another page
         else:
             messages.error(request, "Invalid email or password.")
