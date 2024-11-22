@@ -48,39 +48,61 @@
         a:hover {
             text-decoration: underline;
         }
+        .deactivate-btn {
+            background-color: #f44336;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .deactivate-btn:hover {
+            background-color: #d32f2f;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Admin Dashboard</h1>
-        <table border="1">
-            <thead>
-                <tr>
-                    <th>Email</th>
-                    <th>Role</th>
-                    <th>Status</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Contact Number</th>
-                    <th>Preferences</th>
-                    <th>Email Verified</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for user in users %}
-                <tr>
-                    <td>{{ user.email }}</td>
-                <td>{{ user.role }}</td>
-                <td>{{ user.status }}</td>
-                <td>{{ user.profile.first_name }}</td>
-                <td>{{ user.profile.last_name }}</td>
-                <td>{{ user.profile.contact_number }}</td>
-                <td>{{ user.profile.preferences }}</td>
-                <td>{{ user.email_verified }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <form method="POST">
+            {% csrf_token %}
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Status</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Contact Number</th>
+                        <th>Preferences</th>
+                        <th>Email Verified</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.role }}</td>
+                        <td>{{ user.status }}</td>
+                        <td>{{ user.profile.first_name }}</td>
+                        <td>{{ user.profile.last_name }}</td>
+                        <td>{{ user.profile.contact_number }}</td>
+                        <td>{{ user.profile.preferences }}</td>
+                        <td>{{ user.email_verified }}</td>
+                        <td>
+                            {% if user.status != 'Inactive' %}
+                                <button class="deactivate-btn" name="deactivate_user" value="{{ user.id }}">Deactivate</button>
+                            {% else %}
+                                <span>Deactivated</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </form>
     </div>
 </body>
 <a class="logout-btn" href="{% url 'base:home' %}">Back to Home</a>

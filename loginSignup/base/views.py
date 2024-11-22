@@ -11,6 +11,8 @@ from django.template.loader import render_to_string
 from django.core.mail import EmailMessage, send_mail
 from django.contrib import messages
 
+from django.contrib.auth.models import User
+
 from .forms import UserRegisterForm
 from .models import CustomUser
 from .tokens import account_activation_token
@@ -40,7 +42,17 @@ def login_view(request):
 
         # Authenticate the user
         user = authenticate(request, email=email, password=password)
+
         if user is not None:
+            print(f"User {user.email} is_active: {user.is_active}")  # Debugging statement
+            if not user.is_active:  # Check if the user is inactive
+                messages.error(request, "Your account has been deactivated.")
+                return redirect('base:login')  # Redirect back to login page
+            
+            # if user.status == 'Inactive':  # Check if user is deactivated
+            #     messages.error(request, "Your account has been deactivated.")
+            #     return redirect('base:login')  # Redirect back to login page
+
             # Log in the user
             login(request, user)
             messages.success(request, "You have successfully logged out.")
@@ -62,6 +74,9 @@ def signup_view(request):
         if form.is_valid():
             print("Signup Form is valid")
             user = form.save(commit=True)
+
+            user.is_active = True # Ensure the new user is active by default
+
             password = form.cleaned_data.get('password')
             user.set_password(password)
             user.save()
@@ -130,10 +145,29 @@ def verify_email_complete(request):
     # Renders the email verification complete page
     return render(request, 'user/verify_email_complete.html')
 
+# def user_list(request):
+#     # Renders a list of all users
+#     users = CustomUser.objects.all()  # Uses CustomUser model from models.py
+#     return render(request, 'user/user_list.html', {'users': users})
 def user_list(request):
-    # Renders a list of all users
-    users = CustomUser.objects.all()  # Uses CustomUser model from models.py
+    # Fetch all users from the database
+    users = User.objects.all()
+
+    # Handle the deactivation action
+    if request.method == 'POST':
+        user_id = request.POST.get('deactivate_user')
+        if user_id:
+            user = User.objects.get(id=user_id)
+
+            user.is_active = False #try using the built-in functionality
+
+            user.status = 'Inactive'  # You can change this to whatever status you use to deactivate users
+            user.save()
+            return redirect('all_users')  # Redirect to 'all_users' after deactivation
+
     return render(request, 'user/user_list.html', {'users': users})
+
+
 
 # # View to display the user profile for a specific user
 # def user_profile_view(request, user_id):

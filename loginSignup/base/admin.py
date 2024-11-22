@@ -7,6 +7,10 @@ class CustomUserAdmin(UserAdmin):
     model = CustomUser
     list_display = ('email', 'role', 'status', 'email_verified', 'created_at', 'updated_at')
     list_filter = ('role', 'status', 'email_verified')
+
+    #Adding the custom deactivate action
+    actions = ['deactivate_users']
+
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
         ('Personal Info', {'fields': ('role', 'status', 'email_verified')}),
@@ -21,6 +25,19 @@ class CustomUserAdmin(UserAdmin):
     )
     search_fields = ('email',)
     ordering = ('email',)
+
+    # def deactivate_users(self, request, queryset):
+    #     # Deactivate selected users
+    #     count = queryset.update(status='Inactive')
+    #     self.message_user(request, f'{count} users were deactivated.')
+
+    # deactivate_users.short_description = "Deactivate selected users"
+
+def deactivate_users(modeladmin, request, queryset):
+    queryset.update(is_active=False)
+    modeladmin.message_user(request, ("Selected users have been deactivated."))
+
+
 
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(UserProfile)
