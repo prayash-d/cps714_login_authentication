@@ -44,20 +44,18 @@ def login_view(request):
         user = authenticate(request, email=email, password=password)
         print(user)
         if user is not None:
-            print(f"User {user.email} is_active: {user.is_active}")  # Debugging statement
-            if user.status == "Inactive":  # Check if the user is inactive
-                messages.error(request, "Your account has been deactivated.")
-                return redirect('base:login')  # Redirect back to login page
-            
-            # if user.status == 'Inactive':  # Check if user is deactivated
-            #     messages.error(request, "Your account has been deactivated.")
-            #     return redirect('base:login')  # Redirect back to login page
-
-            # Log in the user
-            else:
+            if (user.status == "Active") and (user.email_verified):  # Check if the user is inactive
+                # Proceed with login
                 login(request, user)
-                messages.success(request, "You have successfully logged out.")
                 return redirect('base:home')  # Redirect to the home page or another page
+            else:
+                errorMsg = ''
+                if user.status == 'Inactive':
+                    errorMsg = errorMsg + 'Your account has been deactivated, please contact support for assistance.'
+                if not(user.email_verified):
+                    errorMsg = errorMsg + 'Your account has not been verified. '
+                messages.error(request, errorMsg)
+                return redirect('base:login')  # Redirect back to login page
         else:
             messages.error(request, "Invalid email or password.")
     
@@ -66,6 +64,16 @@ def login_view(request):
 def logout_view(request):
     # Logs out the user and redirects to the login page
     logout(request)
+    messages.success(request, "You have successfully logged out.")
+    # Filter out messages with a specific condition
+    filtered_messages = []
+    for message in messages.get_messages(request):
+        if "logged out." in message.message:
+            filtered_messages.append(message)
+    storage = messages.get_messages(request)
+    storage.used = True
+    for message in filtered_messages:
+        messages.add_message(request, message.level, message.message)
     return redirect('base:login_view')
 
 def signup_view(request):
@@ -101,10 +109,13 @@ def signup_view(request):
 # In the code below, if the user’s email is unverified, an account activation token is generated using the account_activation_token class 
 # This token can be used to verify a user through email. 
 # A uid was also generated and encoded to ensure that the appropriate user _ to whom the email was sent _ gets verified.
-def verify_email(request):
+def verify_email(request, prefillUser=''):
     # Handles email verification process
-    if request.method == "POST":
+    if prefillUser == '':
         user = request.user
+    else:
+        user = prefillUser
+    if request.method == "POST":
         current_site = get_current_site(request)
         subject = 'Activate Your Account'
         message = render_to_string('user/verify_email_message.html', {  # Uses template account_activation_email.html
@@ -167,15 +178,28 @@ def user_list(request):
 
         user.save()
         messages.success(request, f"User {user.email} has been {action}d.")
+        print(messages)
 
     users = CustomUser.objects.all()
     return render(request, 'user/user_list.html', {'users': users})
 
-
+def resend_verification(request):
+    if request.method == "POST":
+        email = request.POST.get('email')
+        try:
+            user = User.objects.get(email=email)
+        except:
+            user = None
+        if user is not None:
+            verify_email(request, user)
+            return redirect("base:verify_email_done")
+        else:
+            messages.error(request, 'No account associated with the email entered, please try again.')
+            return render(request, 'user/resend_email_verification.html')
+    else:
+        return render(request, "user/resend_email_verification.html")
 
 # # View to display the user profile for a specific user
 # def user_profile_view(request, user_id):
 #    # Fetch all users with their related profiles
 #     users = CustomUser.objects.select_related('profile').all()
- 
-#     return render(request, 'user_profile.html', {'users': users})

@@ -10,7 +10,11 @@
     <ul class="messages">
         {% for message in messages %}
             <li class="{{ message.tags }}">
-                {{ message }}
+                {% if "verified" in message.message %}
+                    {{ message }}<a class="signup-link" href={% url "base:resend_verification" %}>Resend verification email</a>
+                {% else %}
+                    {{ message }}
+                {% endif %}
             </li>
         {% endfor %}
     </ul>

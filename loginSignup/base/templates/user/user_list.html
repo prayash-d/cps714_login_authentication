@@ -1,72 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User List</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 20px;
-        }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background-color: #fff;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            text-align: center;
-            color: #333;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        th, td {
-            padding: 10px;
-            text-align: left;
-        }
-        th {
-            background-color: #007bff;
-            color: white;
-        }
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-        tr:hover {
-            background-color: #ddd;
-        }
-        a {
-            text-decoration: none;
-            color: #007bff;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-        .deactivate-btn {
-            background-color: #f44336;
-            color: white;
-            padding: 5px 10px;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        .deactivate-btn:hover {
-            background-color: #d32f2f;
-        }
-    </style>
-</head>
+{% extends "base.html" %}
+
+{% block content %}
 <body>
-    <div class="container">
-        <h1>Admin Dashboard</h1>
+    <div class="alert-box">
+        <span class="close-alert-btn" onclick="this.parentElement.style.display='none';">&times;</span>
+        {% if messages %}
+            <ul class="messages">
+            {% for message in messages %}
+                <li class="{{ message.tags }}">
+                    {{ message }}
+                </li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+    <div class="shadow-wrap">
+        <h3>User List</h3>
+        <div class="container">
         <form method="POST">
             {% csrf_token %}
-            <table border="1">
+            <table>
                 <thead>
                     <tr>
                         <th>Email</th>
@@ -97,14 +50,14 @@
           {% csrf_token %}
           <input type="hidden" name="user_id" value="{{ user.user_id }}">
           <input type="hidden" name="action" value="deactivate">
-          <button type="submit" class="btn btn-warning">Deactivate</button>
+          <button type="submit" class="deactivate-btn">Deactivate</button>
         </form>
       {% else %}
         <form method="POST" action="{% url 'base:user_list' %}">
           {% csrf_token %}
           <input type="hidden" name="user_id" value="{{ user.user_id }}">
           <input type="hidden" name="action" value="activate">
-          <button type="submit" class="btn btn-success">Activate</button>
+          <button type="submit" class="activate-btn">Activate</button>
         </form>
       {% endif %}
                         </td>
@@ -113,7 +66,8 @@
                 </tbody>
             </table>
         </form>
+        </div>
     </div>
 </body>
 <a class="logout-btn" href="{% url 'base:home' %}">Back to Home</a>
-</html>
+{% endblock content %}
