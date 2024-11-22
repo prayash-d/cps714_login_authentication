@@ -92,11 +92,21 @@
                         <td>{{ user.profile.preferences }}</td>
                         <td>{{ user.email_verified }}</td>
                         <td>
-                            {% if user.status != 'Inactive' %}
-                                <button class="deactivate-btn" name="deactivate_user" value="{{ user.id }}">Deactivate</button>
-                            {% else %}
-                                <span>Deactivated</span>
-                            {% endif %}
+                            {% if user.status == "Active" %}
+        <form method="POST" action="{% url 'base:user_list' %}">
+          {% csrf_token %}
+          <input type="hidden" name="user_id" value="{{ user.user_id }}">
+          <input type="hidden" name="action" value="deactivate">
+          <button type="submit" class="btn btn-warning">Deactivate</button>
+        </form>
+      {% else %}
+        <form method="POST" action="{% url 'base:user_list' %}">
+          {% csrf_token %}
+          <input type="hidden" name="user_id" value="{{ user.user_id }}">
+          <input type="hidden" name="action" value="activate">
+          <button type="submit" class="btn btn-success">Activate</button>
+        </form>
+      {% endif %}
                         </td>
                     </tr>
                     {% endfor %}
