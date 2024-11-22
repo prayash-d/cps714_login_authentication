@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
     <h3>Welcome to GreenGrove Farms!</h3>
-    <a class="logout-btn" href="{% url 'base:user_list' %}">Admin Dashboard</a>
+    {% if user.role == "Admin" %}
+        <a class="logout-btn" href="{% url 'base:user_list' %}">Admin Dashboard</a>
+    {% endif %}
     <a class="logout-link" href="{% url 'base:logout_view' %}">Logout</a>
 <div class="shadow-wrap">
     <div class="'form-wrap">
