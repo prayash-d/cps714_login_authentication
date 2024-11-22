@@ -42,7 +42,7 @@ def login_view(request):
 
         # Authenticate the user
         user = authenticate(request, email=email, password=password)
-
+        print(user)
         if user is not None:
             print(f"User {user.email} is_active: {user.is_active}")  # Debugging statement
             if not user.is_active:  # Check if the user is inactive
