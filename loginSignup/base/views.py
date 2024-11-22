@@ -45,7 +45,7 @@ def login_view(request):
 
         if user is not None:
             print(f"User {user.email} is_active: {user.is_active}")  # Debugging statement
-            if not user.is_active:  # Check if the user is inactive
+            if user.status == "Inactive":  # Check if the user is inactive
                 messages.error(request, "Your account has been deactivated.")
                 return redirect('base:login')  # Redirect back to login page
             
@@ -54,9 +54,10 @@ def login_view(request):
             #     return redirect('base:login')  # Redirect back to login page
 
             # Log in the user
-            login(request, user)
-            messages.success(request, "You have successfully logged out.")
-            return redirect('base:home')  # Redirect to the home page or another page
+            else:
+                login(request, user)
+                messages.success(request, "You have successfully logged out.")
+                return redirect('base:home')  # Redirect to the home page or another page
         else:
             messages.error(request, "Invalid email or password.")
     
@@ -154,17 +155,20 @@ def user_list(request):
     users = User.objects.all()
 
     # Handle the deactivation action
-    if request.method == 'POST':
-        user_id = request.POST.get('deactivate_user')
-        if user_id:
-            user = User.objects.get(id=user_id)
+    if request.method == "POST":
+        user_id = request.POST.get("user_id")
+        action = request.POST.get("action")
+        user = get_object_or_404(CustomUser, pk=user_id)
 
-            user.is_active = False #try using the built-in functionality
+        if action == "activate":
+            user.status = "Active"
+        elif action == "deactivate":
+            user.status = "Inactive"
 
-            user.status = 'Inactive'  # You can change this to whatever status you use to deactivate users
-            user.save()
-            return redirect('all_users')  # Redirect to 'all_users' after deactivation
+        user.save()
+        messages.success(request, f"User {user.email} has been {action}d.")
 
+    users = CustomUser.objects.all()
     return render(request, 'user/user_list.html', {'users': users})
 
 
