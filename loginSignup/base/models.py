@@ -41,6 +41,8 @@ class CustomUser(AbstractUser):
         ('Inactive', 'Inactive'),
     ]
 
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='Active')
+
 
     #we want to login with email instead of username so we are making changes ot the user model that is provided by django by default
     username = None
@@ -57,6 +59,13 @@ class CustomUser(AbstractUser):
     REQUIRED_FIELDS = ['role']
 
     objects = CustomUserManager()
+
+#-----------------------------------
+    def deactivate(self):
+        self.status = 'Inactive'
+        self.save()
+#-----------------------------------
+
 
     def __str__(self):
         return f"{self.email} ({self.role})"
