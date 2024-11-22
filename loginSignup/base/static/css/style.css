@@ -83,9 +83,11 @@ width: 100%;
 
 /*Link styling*/
 .signup-link{
-    color:#2c2c2c;
+    color:#0000FF;
+    text-decoration: underline;
 }
 .signup-link:hover{
+    color:#2424d1;
     text-decoration: underline;
     }
 .logout-link{
