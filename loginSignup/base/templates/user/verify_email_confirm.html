@@ -1,9 +1,16 @@
-<div class="container">
-    {% if messages %}
-        {% for message in messages %}
-            <div class="alert">
-                {{ message }}
-            </div>
-        {% endfor %}
+{% extends "base.html" %}
+
+{% block content %}
+    {% if validlink %}
+        <form method="post">
+            {% csrf_token %}
+            <label for="new_password">New Password</label>
+            <input type="password" name="new_password" required>
+            <label for="confirm_password">Confirm Password</label>
+            <input type="password" name="confirm_password" required>
+            <button type="submit">Reset Password</button>
+        </form>
+    {% else %}
+    <p>The password reset link is invalid or has expired.</p>
     {% endif %}
-</div>
+{% endblock content %}

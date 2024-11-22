@@ -1,5 +1,10 @@
-<h1>You need to verify your email</h1>
-<form method="post">
-    {% csrf_token %}
-    <input class="btn btn-primary max-btn" type="submit" value="Verify">
-</form>
+{% extends "base.html" %}
+{% block content %}
+<div class="shadow-wrap">
+    <h3>Please verify your email address to activate your GreenGrove account.</h3>
+    <form method="post">
+        {% csrf_token %}
+        <input class="logout-btn" type="submit" value="Verify Email Address">
+    </form>
+</div>
+{% endblock content %}

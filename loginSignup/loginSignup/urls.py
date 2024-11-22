@@ -21,5 +21,5 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-   path('', include(('base.urls', 'base'), namespace='base')),  #whenever use will hit request to the server, this is where the initial request will come to
+    path('', include(('base.urls', 'base'), namespace='base')),  #whenever use will hit request to the server, this is where the initial request will come to
 ] 

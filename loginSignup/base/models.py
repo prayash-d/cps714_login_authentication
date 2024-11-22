@@ -31,23 +31,25 @@ class CustomUserManager(BaseUserManager):
 class CustomUser(AbstractUser):
 
     ROLE_CHOICES = [
-        ('Admin', 'Admin'),
-        ('Retailer', 'Retailer'),
         ('Customer', 'Customer'),
+        ('Retailer', 'Retailer'),
         ('Partner', 'Partner'),
+        ('Admin', 'Admin'),
     ]
     STATUS_CHOICES = [
         ('Active', 'Active'),
         ('Inactive', 'Inactive'),
     ]
 
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='Active')
+
 
     #we want to login with email instead of username so we are making changes ot the user model that is provided by django by default
     username = None
     user_id = models.AutoField(primary_key=True)
     email = models.EmailField(_('Email Address'), max_length=255, unique=True)
-    password_hash = models.CharField(_('Password Hash'), max_length=255, null=False)
     role = models.CharField(_('Role'), max_length=10, choices=ROLE_CHOICES, null=False)
+    password_hash = models.CharField(_('Password Hash'), max_length=255, null=False)
     status = models.CharField(_('Status'), max_length=10, choices=STATUS_CHOICES, default='Active')
     email_verified = models.BooleanField(_('Email Verified'), default=False)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -57,6 +59,13 @@ class CustomUser(AbstractUser):
     REQUIRED_FIELDS = ['role']
 
     objects = CustomUserManager()
+
+#-----------------------------------
+    def deactivate(self):
+        self.status = 'Inactive'
+        self.save()
+#-----------------------------------
+
 
     def __str__(self):
         return f"{self.email} ({self.role})"

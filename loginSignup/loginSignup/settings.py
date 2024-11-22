@@ -31,14 +31,13 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "base",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "base",
-
 ]
 
 MIDDLEWARE = [
@@ -140,10 +139,10 @@ LOGOUT_REDIRECT_URL = "base:login"
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 EMAIL_HOST = "smtp.gmail.com"
-EMAIL_HOST_USER = "pooji0602@gmail.com"
-EMAIL_HOST_PASSWORD = "usre rvcd zkvw gxha"
+EMAIL_HOST_USER = "farmsgreengrove@gmail.com"
+EMAIL_HOST_PASSWORD = "fshi tygw drlv lxwj"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = "GreenSomething pooja2014.b@gmail.com"
+DEFAULT_FROM_EMAIL = "GreenGrove Farms"
 
 

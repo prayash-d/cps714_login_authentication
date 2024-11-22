@@ -1,24 +1,34 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="shadow-wrap">
-    <div class="form-wrap">
-        <h3>Login</h3>
 
+<div class="shadow-wrap">
+    <h3>Login</h3>
+    <div class="form-wrap">
+         <!-- Messages Block -->
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li class="{{ message.tags }}">
+                {{ message }}
+            </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
     <form method="POST">
         {% csrf_token %}
-        <label for="email">Email:</label>
+        <label for="email">Email</label>
         <input type="email" name="email" id="email" required>
         <br>
-        <label for="password">Password:</label>
+        <label for="password">Password</label>
         <input type="password" name="password" id="password" required>
         <br>
         <button type="submit">Login</button>
-<form>
-
-<a class="signup-link" href={% url "base:signup_view" %}>Signup</a>
+    <form>
+</div>
+<a class="signup-link" href={% url "base:signup_view" %}>Register</a>
+<a class="signup-link" href={% url "base:password_reset" %}>Forgot Password</a>
 
 </div>
 </div>
-
 {% endblock content %}

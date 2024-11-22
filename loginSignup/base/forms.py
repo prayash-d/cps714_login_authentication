@@ -5,56 +5,80 @@ from .models import UserProfile, CustomUser
 User = get_user_model()
 
 class UserRegisterForm(forms.ModelForm):
+    email = forms.EmailField(
+        label='Email Address',
+        label_suffix= '*',
+        widget=forms.EmailInput(attrs={'placeholder': 'johnsmith@greengrove.com'}),
+    )
     password = forms.CharField(
         label='Password',
-        widget=forms.PasswordInput(attrs={'placeholder': 'Enter your password'}),
+        label_suffix= '*',
+        widget=forms.PasswordInput(attrs={'placeholder': ''}),
     )
 
     confirm_password = forms.CharField(
         label='Confirm Password',
-        widget=forms.PasswordInput(attrs={'placeholder': 'Confirm your password'}),
+        label_suffix= '*',
+        widget=forms.PasswordInput(attrs={'placeholder': ''}),
     )
 
     role = forms.ChoiceField(
         label='Role',
+        label_suffix= '*',
         choices=CustomUser.ROLE_CHOICES,
-        widget=forms.Select(attrs={'placeholder': 'Select your role'}),
+        widget=forms.Select(attrs={'placeholder': 'Select your role', 'class': 'form-dropdown'}),
     )
     # Fields from the UserProfile model
     first_name = forms.CharField(
         label='First Name',
+        label_suffix= '*',
         max_length=100,
-        widget=forms.TextInput(attrs={'placeholder': 'Enter your first name'}),
+        widget=forms.TextInput(attrs={'placeholder': 'Joanne'}),
     )
     last_name = forms.CharField(
         label='Last Name',
+        label_suffix= '*',
         max_length=100,
-        widget=forms.TextInput(attrs={'placeholder': 'Enter your last name'}),
+        widget=forms.TextInput(attrs={'placeholder': 'Smith'}),
     )
     contact_number = forms.CharField(
-        label='Contact Number',
+        label='Phone Number',
+        label_suffix= '',
         max_length=20,
         required=False,
-        widget=forms.TextInput(attrs={'placeholder': 'Enter your contact number'}),
+        widget=forms.TextInput(attrs={'placeholder': 'e.g. 1235467890'}),
     )
-
+    # Meta class to specify the model and fields to be used
     class Meta:
         model = CustomUser
-        fields = ['email', 'password', 'role', 'status']  # Fields from the CustomUser model
+        fields = ['email', 'password', 'role']  # Fields from the CustomUser model
+    
+    # form field order
+    field_order = ['first_name', 'last_name', 'email', 'contact_number', 'password', 'confirm_password', 'role']
 
+     # Clean the form data add check for errors   
     def clean(self):
         cleaned_data = super().clean()
         password = cleaned_data.get('password')
         confirm_password = cleaned_data.get('confirm_password')
 
+        # Check if password and confirm_password match
         if password and confirm_password and password != confirm_password:
             self.add_error('confirm_password', "Passwords do not match. Please try again.")
 
-        if password and len(password) < 5:
-            self.add_error('password', "Password must be at least 5 characters long.")
+        # Check if password is at least 8 characters long
+        if password and len(password) < 8:
+            self.add_error('password', "Password must be at least 8 characters long.")
+
+            # Check if the password contains at least 3 numbers
+        if password:
+            digit_count = sum(char.isdigit() for char in password)
+            if digit_count < 3:
+                self.add_error('password', "Password must contain at least 3 numbers.")
 
         return cleaned_data
 
+    # Save the user and profile data when the form is submitted
     def save(self, commit=True):
         # Save the user first
         user = super().save(commit=False)

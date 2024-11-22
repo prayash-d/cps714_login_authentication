@@ -1,7 +1,18 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="home-content">
-    <p>Welcome to GreenGrove Farms!</p>
-    <a class="logout-btn" href="{% url 'base:logout' %}">Logout</a>
+    <h3>Welcome to GreenGrove Farms!</h3>
+    <a class="logout-btn" href="{% url 'base:user_list' %}">Admin Dashboard</a>
+    <a class="logout-link" href="{% url 'base:logout_view' %}">Logout</a>
+<div class="shadow-wrap">
+    <div class="'form-wrap">
+        <h2>User Information</h2>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>Role:</strong> {{ user.role }}</p>
+        <p><strong>Status:</strong> {{ user.status }}</p>
+        <p><strong>First Name:</strong> {{ profile.first_name }}</p>
+        <p><strong>Last Name:</strong> {{ profile.last_name }}</p>
+        <p><strong>Contact Number:</strong> {{ profile.contact_number }}</p>
+        <p><strong>Preferences:</strong> {{ profile.preferences }}</p>
+    </div>
 </div>
 {% endblock content %}
