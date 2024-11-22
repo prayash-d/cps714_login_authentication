@@ -8,7 +8,7 @@ class UserRegisterForm(forms.ModelForm):
     email = forms.EmailField(
         label='Email Address',
         label_suffix= '*',
-        widget=forms.EmailInput(attrs={'placeholder': 'johnsmith@greengrove.com'}),
+        widget=forms.EmailInput(attrs={'placeholder': 'joannesmith@greengrove.com'}),
     )
     password = forms.CharField(
         label='Password',

@@ -41,10 +41,19 @@ def login_view(request):
         # Authenticate the user
         user = authenticate(request, email=email, password=password)
         if user is not None:
-            # Log in the user
-            login(request, user)
-            messages.success(request, "You have successfully logged out.")
-            return redirect('base:home')  # Redirect to the home page or another page
+            # check that user is active, and user verified
+            if user.email_verified and user.is_active:
+                # Log in the user
+                login(request, user)
+                messages.success(request, "You have successfully logged out.")
+                return redirect('base:home')  # Redirect to the home page or another page
+            else:
+                errorcombo = ""
+                if not(user.email_verified):
+                    errorcombo = errorcombo + 'Your account has not been verified. '
+                if not(user.is_active):
+                    errorcombo = errorcombo + 'Your account is not active, please contact support for assistance.'
+                messages.error(request, errorcombo)
         else:
             messages.error(request, "Invalid email or password.")
     
