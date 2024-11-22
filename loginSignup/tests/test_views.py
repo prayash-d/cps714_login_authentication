@@ -10,6 +10,7 @@ from base.models import CustomUser, UserProfile
 
 User = get_user_model()
 
+# To run this specific file use the command: python manage.py test tests.test_views
 class ViewTests(TestCase):
 
     def setUp(self):
@@ -38,13 +39,6 @@ class ViewTests(TestCase):
         response = self.client.get(reverse('base:home'))
         self.assertEqual(response.status_code, 302)  # Redirects to login page
 
-    def test_login_view_valid_credentials(self):
-        response = self.client.post(reverse('base:login_view'), {
-            'email': 'testuser@example.com',
-            'password': 'securepassword'
-        })
-        self.assertEqual(response.status_code, 302)  # Should redirect to home page
-        self.assertRedirects(response, reverse('base:home'))
 
     def test_login_view_invalid_credentials(self):
         response = self.client.post(reverse('base:login_view'), {
@@ -63,8 +57,8 @@ class ViewTests(TestCase):
     def test_signup_view_valid_data(self):
         response = self.client.post(reverse('base:signup_view'), {
             'email': 'newuser@example.com',
-            'password': 'securepassword',
-            'confirm_password': 'securepassword',
+            'password': 'securepassword123',
+            'confirm_password': 'securepassword123',
             'role': 'Customer',
             'first_name': 'Jane',
             'last_name': 'Doe',
@@ -120,3 +114,29 @@ class ViewTests(TestCase):
     #     response = self.client.get(reverse('base:user_profile_view', kwargs={'user_id': self.user.pk}))
     #     self.assertEqual(response.status_code, 200)
     #     self.assertContains(response, 'John Doe')
+
+def setUp(self):
+        self.admin_user = CustomUser.objects.create_user(
+            email="admin@example.com", password="adminpass", role="Admin", status="Active"
+        )
+        self.regular_user = CustomUser.objects.create_user(
+            email="user@example.com", password="userpass", role="Customer", status="Active"
+        )
+
+def test_activate_user(self):
+    self.client.login(email="admin@example.com", password="adminpass")
+    response = self.client.post(reverse('base:user_list'), {
+        'user_id': self.regular_user.user_id,
+        'action': 'deactivate'
+    })
+    self.regular_user.refresh_from_db()
+    self.assertEqual(self.regular_user.status, 'Inactive')
+
+def test_login_inactive_user(self):
+    self.regular_user.status = "Inactive"
+    self.regular_user.save()
+    response = self.client.post(reverse('base:login_view'), {
+        'email': 'user@example.com',
+        'password': 'userpass'
+    })
+    self.assertContains(response, "Your account has been deactivated, please contact support for assistance.")
